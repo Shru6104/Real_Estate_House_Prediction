@@ -1,0 +1,208 @@
+/* General Body Styling */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-image: url('https://wallpapercrafter.com/desktop1/678781-cityscape-USA-Chicago-office-building-exterior.jpg'); /* New Background Image URL */
+    background-repeat: no-repeat; /* Prevents repeating the image */
+    background-size: cover; /* Ensures the image covers the entire page */
+    background-position: center center; /* Centers the image */
+    color: #333;
+    overflow-x: hidden; /* Prevents horizontal overflow */
+    transition: background 1s ease; /* Smooth transition for background change */
+}
+
+/* Background Image Styling (Blurred) */
+.img {
+    background: url('https://wallpapercrafter.com/desktop1/678781-cityscape-USA-Chicago-office-building-exterior.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(15px);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Semi-transparent overlay on the background image */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);  /* Adds darkness for contrast */
+    z-index: -1;  /* Places it behind the form */
+}
+
+/* Form Styling with Gradient Background */
+.form {
+    max-width: 320px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+    line-height: 1.625;
+    margin: 50px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #e69223, #ddb91d); /* Gradient background */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Soft shadow */
+    opacity: 1;  /* Ensure the form is fully visible */
+    animation: fadeIn 1s forwards;  /* Apply fade-in animation */
+    box-sizing: border-box; /* Prevents overflow */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Input Fields Styling (Location, Area, etc.) */
+.area, .location {
+    font-family: 'Roboto', sans-serif;
+    outline: 0;
+    background: #f8f9fa;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin: 12px 0;
+    padding: 12px;
+    box-sizing: border-box;
+    font-size: 16px;
+    height: 40px;
+    border-radius: 8px;
+    transition: all 0.3s ease;  /* Smooth transition for focus */
+    
+    /* Flexbox for centering text */
+    display: flex;
+    align-items: center;  /* Vertically center the text */
+    justify-content: center;  /* Horizontally center the text */
+}
+
+/* Focus effect for inputs */
+.area:focus, .location:focus {
+    border-color: #28a745;  /* Green border on focus */
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.3);  /* Light green glow on focus */
+}
+
+/* Adjust the padding and width to ensure the text fits properly */
+.location {
+    width: 100%;  /* Ensure full width */
+    font-size: 16px;  /* Adjust font size for better visibility */
+    height: 45px;  /* Increase height if necessary to avoid text cut-off */
+}
+
+/* Bathroom Selection Switch Styling */
+.switch-field {
+    display: flex;
+    margin-bottom: 36px;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.switch-field input {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+}
+
+.switch-field label {
+    background-color: #e4e4e4;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+    padding: 8px 16px;
+    margin-right: -1px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+    cursor: pointer;
+}
+
+.switch-field input:checked + label {
+    background-color: #a5dc86;
+    box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+    border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+    border-radius: 0 4px 4px 0;
+}
+
+/* Submit Button Styling */
+.submit {
+    background: #28a745;
+    width: 100%;
+    border: 0;
+    margin: 20px 0;
+    padding: 12px;
+    box-sizing: border-box;
+    font-size: 16px;
+    height: 45px;
+    text-align: center;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;  /* Button hover effect */
+}
+
+/* Scale-up on hover for the submit button */
+.submit:hover {
+    background: #218838; /* Darker shade on hover */
+    transform: scale(1.05);  /* Slightly increase size on hover */
+}
+
+/* Result Box Styling */
+.result {
+    background: #f8c146;
+    width: 100%;
+    border: 0;
+    margin: 8px 0 0 0;
+    padding: 0 12px;
+    box-sizing: border-box;
+    font-size: 16px;
+    height: 45px;
+    text-align: center;
+    color: #fff;
+    border-radius: 8px;
+    opacity: 0;  /* Initially hidden */
+    transform: translateY(30px);  /* Start from below */
+    animation: slideUp 0.5s forwards;  /* Apply slide-up animation */
+    animation-delay: 1s;  /* Delay the animation until after form submission */
+    overflow: hidden; /* Prevents overflow */
+
+    /* Flexbox for centering text */
+    display: flex;
+    align-items: center;  /* Vertically center the text */
+    justify-content: center;  /* Horizontally center the text */
+}
+
+/* Slide-Up Animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
