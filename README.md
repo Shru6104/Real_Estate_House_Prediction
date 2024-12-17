@@ -1,2 +1,2 @@
 # Real_Estate_House_Prediction
-A web app to predict house prices based on real estate data
+This repository contains the complete codebase for a real estate price prediction web application. The project integrates machine learning and web development to provide an interactive platform for predicting property prices in Bangalore.
