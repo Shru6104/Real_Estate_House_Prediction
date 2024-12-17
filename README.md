@@ -1,2 +1,2 @@
 # Real_Estate_House_Prediction
-This repository contains the complete codebase for a real estate price prediction web application. The project integrates machine learning and web development to provide an interactive platform for predicting property prices in Bangalore.
+Built a real estate price prediction web app using Python, Flask, and Linear Regression. The project involved data cleaning, feature engineering, and building a prediction model with Sklearn. Developed a user-friendly interface using HTML, CSS, and JavaScript to take inputs like square feet area, BHK, and bathrooms and display predicted prices. This project showcases skills in data analysis, machine learning, and web development.
