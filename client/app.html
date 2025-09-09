@@ -1,205 +1,277 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Banglore Home Price Prediction</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="app.js"></script>
-	<link rel="stylesheet" href="app.css">
-</head>
-<body>
-<div class="img"></div>
-<form class="form">
-	<h2>Area (Square Feet)</h2>
-    <input class="area"  type="text" id="uiSqft" class="floatLabel" name="Squareft" value="1000">
-	<h2>BHK</h2>
-	<div class="switch-field">
-		<input type="radio" id="radio-bhk-1" name="uiBHK" value="1"/>
-		<label for="radio-bhk-1">1</label>
-		<input type="radio" id="radio-bhk-2" name="uiBHK" value="2" checked/>
-		<label for="radio-bhk-2">2</label>
-		<input type="radio" id="radio-bhk-3" name="uiBHK" value="3"/>
-		<label for="radio-bhk-3">3</label>
-		<input type="radio" id="radio-bhk-4" name="uiBHK" value="4"/>
-		<label for="radio-bhk-4">4</label>
-		<input type="radio" id="radio-bhk-5" name="uiBHK" value="5"/>
-		<label for="radio-bhk-5">5</label>
-	</div>
-	</form>
-<form class="form">
-	<h2>Bathroom</h2>
-	<div class="switch-field">
-		<input type="radio" id="radio-bath-1" name="uiBathrooms" value="1"/>
-		<label for="radio-bath-1">1</label>
-		<input type="radio" id="radio-bath-2" name="uiBathrooms" value="2" checked/>
-		<label for="radio-bath-2">2</label>
-		<input type="radio" id="radio-bath-3" name="uiBathrooms" value="3"/>
-		<label for="radio-bath-3">3</label>
-		<input type="radio" id="radio-bath-4" name="uiBathrooms" value="4"/>
-		<label for="radio-bath-4">4</label>
-		<input type="radio" id="radio-bath-5" name="uiBathrooms" value="5"/>
-		<label for="radio-bath-5">5</label>
-	</div>
-		<h2>Location</h2>
-	<div>
-  <select class="location" name="" id="uiLocations">
-    <option value="" disabled="disabled" selected="selected">Choose a Location</option>
-		<option>Electronic City</option>
-        <option>Rajaji Nagar</option>
-  </select>
-</div>
-	<button class="submit" onclick="onClickedEstimatePrice()" type="button">Estimate Price</button>
-	<div id="uiEstimatedPrice" class="result">	<h2></h2> </div>
-</body>
-</html>
-employ,ent details package com.example.loanapp.entity;
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import ProgressBar from "./ProgressBar";
+import {
+  ArrowRight,
+  ArrowLeft,
+  Briefcase,
+  Bot,
+  Upload,
+  FileText,
+} from "lucide-react";
 
-import jakarta.persistence.*;
+const cities = [
+  "New York",
+  "San Francisco",
+  "London",
+  "Toronto",
+  "Mumbai",
+  "Bengaluru",
+  "Gurugram",
+  "Delhi",
+  "Chennai",
+];
 
-@Entity
-public class EmploymentDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String occupationType;
-    private String employerName;
-    private String designation;
-    private String annualIncome;
-    private String workExperience;
-    private String location;
-    private String officeAddress;
+const EmploymentDetails = () => {
+  const [formData, setFormData] = useState({
+    occupationType: "",
+    employerName: "",
+    designation: "",
+    annualIncome: "",
+    workExperience: "",
+    location: "",
+    officeAddress: "",
+    attachments: {
+      salaryProof: null,
+      employmentProof: null,
+      businessProof: null,
+      gstCertificate: null,
+      itr: null,
+      bankStatements: null,
+    },
+  });
 
-    // Store filenames or file paths of attachments
-    private String salaryProof;
-    private String employmentProof;
-    private String businessProof;
-    private String gstCertificate;
-    private String itr;
-    private String bankStatements;
+  const [activeTab, setActiveTab] = useState("employment"); // 'employment' or 'attachments'
 
-    // Getters and Setters
-}
-loan details
-package com.example.loanapp.entity;
+  // ✅ Fixed input handler
+  const handleInputChange = (e) => {
+    const { name, value, type } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]:
+        type === "number"
+          ? value === "" ? null : Number(value)
+          : value,
+    }));
+  };
 
-import jakarta.persistence.*;
+  const handleFileChange = (e, attachmentName) => {
+    const file = e.target.files[0];
+    setFormData((prevData) => ({
+      ...prevData,
+      attachments: {
+        ...prevData.attachments,
+        [attachmentName]: file,
+      },
+    }));
+  };
 
-@Entity
-public class LoanDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String loanType;
-    private String requiredLoanAmount;
-    private String loanDuration;
-    private String hasExistingLoan;
-    private String preferredEmiDate;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Employment Details Submitted:", formData);
+    // TODO: send formData to backend via fetch/axios
+  };
 
-    private String saleAgreement;
-    private String ec;
-    private String dealerInvoice;
-    private String quotation;
-    private String admissionLetter;
-    private String feeStructure;
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 to-indigo-50">
+      <ProgressBar currentStep={2} />
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-8">
+          <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            Employment Details
+          </h2>
 
-    // Getters and Setters
-}
+          {/* Tabs */}
+          <div className="flex mb-6 border-b border-gray-200">
+            <button
+              className={`flex-1 py-3 text-sm font-medium ${
+                activeTab === "employment"
+                  ? "text-indigo-600 border-b-2 border-indigo-600"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("employment")}
+            >
+              Employment Info
+            </button>
+            <button
+              className={`flex-1 py-3 text-sm font-medium ${
+                activeTab === "attachments"
+                  ? "text-indigo-600 border-b-2 border-indigo-600"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("attachments")}
+            >
+              Attachments
+            </button>
+          </div>
 
-emp details repo -
-package com.example.loanapp.repository;
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <AnimatePresence mode="wait">
+              {activeTab === "employment" && (
+                <motion.div
+                  key="employment"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-4"
+                >
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Occupation Type
+                    </label>
+                    <select
+                      name="occupationType"
+                      value={formData.occupationType}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    >
+                      <option value="">Select Occupation</option>
+                      <option value="Salaried">Salaried</option>
+                      <option value="Business">Business</option>
+                      <option value="Professional">Professional</option>
+                      <option value="Student">Student</option>
+                    </select>
+                  </div>
 
-import com.example.loanapp.entity.EmploymentDetails;
-import org.springframework.data.jpa.repository.JpaRepository;
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Employer/Business Name
+                    </label>
+                    <input
+                      type="text"
+                      name="employerName"
+                      value={formData.employerName}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                      placeholder="Enter name"
+                    />
+                  </div>
 
-public interface EmploymentDetailsRepository extends JpaRepository<EmploymentDetails, Long> { }
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Designation
+                    </label>
+                    <input
+                      type="text"
+                      name="designation"
+                      value={formData.designation}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                      placeholder="Your role"
+                    />
+                  </div>
 
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Annual Income
+                    </label>
+                    <input
+                      type="number"
+                      name="annualIncome"
+                      value={formData.annualIncome || ""}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                      placeholder="500000"
+                    />
+                  </div>
 
-	loan details repo - package com.example.loanapp.repository;
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Work Experience (Years)
+                    </label>
+                    <input
+                      type="number"
+                      name="workExperience"
+                      value={formData.workExperience || ""}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                      placeholder="5"
+                    />
+                  </div>
 
-import com.example.loanapp.entity.LoanDetails;
-import org.springframework.data.jpa.repository.JpaRepository;
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Location
+                    </label>
+                    <select
+                      name="location"
+                      value={formData.location}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    >
+                      <option value="">Select City</option>
+                      {cities.map((city) => (
+                        <option key={city} value={city}>
+                          {city}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-public interface LoanDetailsRepository extends JpaRepository<LoanDetails, Long> { }
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Office Address
+                    </label>
+                    <textarea
+                      name="officeAddress"
+                      value={formData.officeAddress}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                      rows="3"
+                      placeholder="Enter address"
+                    />
+                  </div>
+                </motion.div>
+              )}
 
-	loan applicationservice - 
-	package com.example.loanapp.service;
+              {activeTab === "attachments" && (
+                <motion.div
+                  key="attachments"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-4"
+                >
+                  {Object.keys(formData.attachments).map((attachment) => (
+                    <div key={attachment}>
+                      <label className="block text-sm font-medium text-gray-700 capitalize">
+                        {attachment.replace(/([A-Z])/g, " $1")}
+                      </label>
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, attachment)}
+                        className="mt-1 block w-full text-sm text-gray-500"
+                      />
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-import com.example.loanapp.entity.EmploymentDetails;
-import com.example.loanapp.entity.LoanDetails;
-import com.example.loanapp.repository.EmploymentDetailsRepository;
-import com.example.loanapp.repository.LoanDetailsRepository;
-import org.springframework.stereotype.Service;
+            <div className="flex justify-between pt-6">
+              <Link
+                to="/personal"
+                className="flex items-center text-gray-600 hover:text-indigo-600"
+              >
+                <ArrowLeft className="h-5 w-5 mr-2" />
+                Back
+              </Link>
+              <button
+                type="submit"
+                className="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+              >
+                Next
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-@Service
-public class LoanApplicationService {
-
-    private final EmploymentDetailsRepository employmentRepo;
-    private final LoanDetailsRepository loanRepo;
-
-    public LoanApplicationService(EmploymentDetailsRepository employmentRepo, LoanDetailsRepository loanRepo) {
-        this.employmentRepo = employmentRepo;
-        this.loanRepo = loanRepo;
-    }
-
-    public EmploymentDetails saveEmploymentDetails(EmploymentDetails employmentDetails) {
-        return employmentRepo.save(employmentDetails);
-    }
-
-    public LoanDetails saveLoanDetails(LoanDetails loanDetails) {
-        return loanRepo.save(loanDetails);
-    }
-}
-
-
-	loan application controller - 
-	package com.example.loanapp.controller;
-
-import com.example.loanapp.entity.EmploymentDetails;
-import com.example.loanapp.entity.LoanDetails;
-import com.example.loanapp.service.LoanApplicationService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-@RestController
-@RequestMapping("/api")
-@CrossOrigin(origins = "*")  // Enable CORS for frontend integration
-public class LoanApplicationController {
-
-    private final LoanApplicationService service;
-
-    public LoanApplicationController(LoanApplicationService service) {
-        this.service = service;
-    }
-
-    @PostMapping("/employment-details")
-    public ResponseEntity<EmploymentDetails> saveEmploymentDetails(@RequestBody EmploymentDetails details) {
-        EmploymentDetails saved = service.saveEmploymentDetails(details);
-        return ResponseEntity.ok(saved);
-    }
-
-    @PostMapping("/loan-details")
-    public ResponseEntity<LoanDetails> saveLoanDetails(@RequestBody LoanDetails details) {
-        LoanDetails saved = service.saveLoanDetails(details);
-        return ResponseEntity.ok(saved);
-    }
-}
-
-
-		main claass - package com.example.loanapp;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class LoanAppApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(LoanAppApplication.class, args);
-    }
-}
-
-
-		applcaton.propeties spring.datasource.url=jdbc:mysql://localhost:3306/loanapp
-spring.datasource.username=root
-spring.datasource.password=yourpassword
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+export default EmploymentDetails;
